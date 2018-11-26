@@ -31,7 +31,7 @@ while True:
     line = sys.stdin.readline()
     if not line:
         break
-    [old, new, ref] = line.split(None, 2)
+    [old, new, ref] = line.strip().split(None, 2)
     logging.info("Posting commit message for ref %s in project %s", new, project)
 
     process = Popen(["git", "show", "--name-only", new], stdout=PIPE)
