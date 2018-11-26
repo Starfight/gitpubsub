@@ -10,7 +10,7 @@ pcall(function() JSON = require "JSON" end) -- JSON: http://regex.info/code/JSON
 pcall(function() json = require "json" end) -- LuaJSON, if available
 local lfs = false -- LuaFileSystem
 local socket = require "socket" -- Lua Sockets
-local config = require "config" -- Configuration parser
+local config = require "pl.config" -- Configuration parser
 
 
 --[[ General settings, defaults ]] --

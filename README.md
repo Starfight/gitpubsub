@@ -61,10 +61,53 @@ to the GitPubSub server. By default, only 127.0.0.1 is allowed to publish.
 
 Any client can grab the JSON feeds off the server.
 
+## Installation
 
-### Running the server: ###
+### Dependencies 
 
-Then simply run: `nohup lua gitpubsub.lua &` and you're done!
+Best way to install gitpubsub is using [luarocks](https://luarocks.org) for dependencies. On debian, luarocks can be install with apt:
+
+```
+$ apt install luarocks
+```
+
+Install dependencies:
+
+```
+$ luarocks install luasocket luajson luafilesystem penlight
+```
+
+For python hook, you need to install [httplib2](https://pypi.org/project/httplib2/):
+
+```
+$ apt install python-httplib2
+```
+
+### Service
+
+If you want to use gitpubsub with systemd, create a file like `/etc/systemd/system/gitpubsub-server.service`:
+
+```
+[Unit]
+Description=Gitpubsub server
+After=network.target
+
+[Service]
+Type=simple
+User=gitpubsub
+WorkingDirectory=/path/to/gitpubsub
+ExecStart=/usr/bin/lua gitpubsub.lua
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Verify access right for user and do not forget to reload systemd with `systemctl daemon-reload`.
+
+### Git hook
+
+Move or link `post_receive.py` script to git hooks directory.
 
 ### Polling for statistics ###
 
@@ -83,18 +126,4 @@ something similar to:
 ### Other uses ###
 GitPubSub can be used to broadcast any form of JSON-encoded data to multiple 
 recipients, not just Git commits.
-
-
-### Pre-requisites: ###
-GitPubSub requires the following modules/scripts:
-
-`luafilesystem` http://keplerproject.github.com/luafilesystem/ (only required if local scanning is active)
-
-`luasocket` http://luaforge.net/projects/luasocket/
-
-`LuaJSON` http://luaforge.net/projects/luajson/
-
-OR
-
-`JSON` http://regex.info/code/JSON.lua
 
